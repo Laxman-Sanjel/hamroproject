@@ -1,0 +1,197 @@
+﻿
+@model IEnumerable<Bca_New.Models.Players>
+<!DOCTYPE html>
+<html lang="en">
+ <header>
+<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+<script src="http://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit" async defer></script>
+<style type="text/css">
+        select 
+	   {
+			width: 100%;
+			padding: 4px 10px;
+			margin: 3px 0;
+	    }
+      </style>
+</header>
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+
+<div class="content-wrapper">
+<div class="card text-center">
+  <div class="card-body mt-5">
+                  
+  <div class="card-header d-flex justify-content-end">
+   <button class="btn btn-success" id="addRoom">Add Info</button>
+    </div>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th>SN</th>
+                <th>T_name</th>
+                <th>T_Type</th>
+                <th>S_name</th>
+                <th>date</th>
+                <th>S_time</th>
+                <th>E_time</th>
+                <th>Status</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var items in Model){
+                  <tr>
+                  <th scope="row">#</th>
+                      <td>@items.name</td>
+                      <td>@items.tournment_type</td>
+                      <td>@items.sport_name</td>
+                      <td>@items.date</td>
+                      <td>@items.start_time</td>
+                      <td>@items.end_time</td>
+                       <td>@items.status</td>
+                
+                      <td>
+                      <button class="btnRoomEdit btn btn-warning" asp-action="Edit" asp-controller="Home">Edit</button>
+                          <input type="hidden" name="id" value="@items.id">
+                          
+                      <a class=" btn btn-danger" asp-action="Delete" asp-route-id="@items.id">Delete</a>
+                      </td>    
+                  </tr>
+                  }
+            </tbody>
+        </table>
+ 
+     <!--Insert modal-->
+    <div class="modal fade" id="addNewroom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Room</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+     <div class="modal-body">
+         <form method="POST" action="Home/Form1">
+
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label float-left">Tournment_name</label>
+                                    <input type="text" class="form-control" id="name" name="name" aria-describedby="title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Sport_Name</label>
+                                    <input type="text" class="form-control" id="sport_name" name="sport_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold text-dark float-left">Tournment_Type:</label>
+                                    <select class="form control" id="tournment_Type" name="tournment_type">
+                                        <option selected>Tournment_Type</option>
+                                        <option value="Test Matches">Test Matches.</option>
+                                        <option value="One Day Internationals">One Day Internationals</option>
+                                        <option value="Twenty20 Internationals">Twenty20 Internationals</option>
+
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label float-left">Tournment_Date</label>
+                                    <input type="date" class="form-control" id="date" name="date" aria-describedby="title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Start_Time</label>
+                                    <input type="time" class="form-control" id="startt_time" name="start_time">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">End_Time</label>
+                                    <input type="time" class="form-control" id="end_time" name="end_time">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Status</label>
+                                    <input type="text" class="form-control" id="status" name="status">
+                                </div>
+
+                                <a href="#" button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button></a>
+                                <button type="submit" class="btn btn-primary" id="btnAddroom">Add info</button>
+                            </form>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+<!--End Of Insert Modal-->
+
+<div class="modal fade" id="showform" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel float-left">Update Info</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form method="POST" action="/Home/Updated">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label float-left">Tournment_name</label>
+                                    <input type="text" class="form-control" id="name" name="name" aria-describedby="title">
+                                </div>
+                               <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Sport_Name</label>
+                                    <input type="text" class="form-control" id="sport_name" name="sport_name"value="sport_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="font-weight-bold text-dark float-left">Tournment_Type:</label>
+                                    <select class="form control" id="tournment_Type" name="tournment_type"value="tournment_type">
+                                        <option selected>Tournment_Type</option>
+                                        <option value="Test Matches">Test Matches.</option>
+                                        <option value="One Day Internationals">One Day Internationals</option>
+                                        <option value="Twenty20 Internationals">Twenty20 Internationals</option>
+
+                                    </select>
+                                </div>
+                              @*  <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Tournment_Venue</label>
+                                    <input type="text" class="form-control" id="venu" name="venu"value="@Model.venue">
+                                </div>*@
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label float-left">Tournment_Date</label>
+                                    <input type="date" class="form-control" id="date" name="date" value="date" aria-describedby="title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Start_Time</label>
+                                    <input type="time" class="form-control" id="startt_time" name="start_time"value="start_time">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">End_Time</label>
+                                    <input type="time" class="form-control" id="end_time" name="end_time"value="end_time">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label float-left">Status</label>
+                                            <input type="text" class="form-control" id="status" name="status" value="status">
+                                </div>
+
+                                <a href="#" button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button></a>
+                                        <button type="submit" class="btn btn-primary float-right" id="btnRoomEdit">Update</button>
+                             </form>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                     
+                           
+<!-- End Of Delete Modal-->
+
+<script Type="text/javascript">
+$(document).ready(function(){
+  $("#addRoom").on('click',function(){
+        $("#addNewroom").modal("show");
+    });
+
+    $(".btnRoomEdit").on('click',function(){
+        $("#showform").modal("show");
+     });
+});
+</script>
+</div>
+</div>
+</body>
+</html>
+
+
+
